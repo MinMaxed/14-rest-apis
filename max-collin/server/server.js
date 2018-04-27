@@ -15,7 +15,7 @@ const TOKEN = process.env.TOKEN;
 
 // COMMENT: Explain the following line of code. What is the API_KEY? Where did it come from? In this instance, the API_KEY is grabbing our environmental variable called GOOGLE_API_KEY which we set manually on heroku, or wherever we will deploy this code.
 
-// const GOOGLE_API_KEY = 'AIzaSyB2pfxQ_jwu-9ZENSxDNPK09WN_oWgQLJE';
+const GOOGLE_API_KEY = 'AIzaSyB2pfxQ_jwu-9ZENSxDNPK09WN_oWgQLJE';
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 
