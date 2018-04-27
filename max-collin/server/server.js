@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Endpoints
-app.get('/api/v1/admin', (req, res) => res.send(TOKEN === parseInt(req.query.token)))
+app.get('/api/v1/admin', (req, res) => res.send(TOKEN === parseInt(req.query.token)));
 
 app.get('/api/v1/books/find', (req, res) => {
   let url = 'https://www.googleapis.com/books/v1/volumes';
@@ -41,7 +41,8 @@ app.get('/api/v1/books/find', (req, res) => {
   if (req.query.author) query += `+inauthor:${req.query.author}`;
   if (req.query.isbn) query += `+isbn:${req.query.isbn}`;
 
-  // COMMENT: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose? Superagent is a proxy handler that prevents keys from being leaked to a 3rd party.
+  // COMMENT: What is superagent? How is it being used here? What other libraries are available that could be used for the same purpose?
+  //Superagent is a proxy handler that prevents keys from being leaked to a 3rd party. It is attatching the superAgent to the .get request that contains sensative information / our API_KEY Oauth have similar uses.
   superagent.get(url)
     .query({ 'q': query })
     .query({ 'key': API_KEY })
@@ -61,11 +62,11 @@ app.get('/api/v1/books/find', (req, res) => {
         image_url: imageLinks ? imageLinks.smallThumbnail : placeholderImage,
         description: description ? description : 'No description available',
         book_id: industryIdentifiers ? `${industryIdentifiers[0].identifier}` : '',
-      }
+      };
     }))
     .then(arr => res.send(arr))
-    .catch(console.error)
-})
+    .catch(console.error);
+});
 
 // COMMENT: How does this route differ from the route above? What does ':isbn' refer to in the code below? This route is finding a specific book via the isbn, which is a key that's given to books when they are published.
 app.get('/api/v1/books/find/:isbn', (req, res) => {
@@ -83,11 +84,11 @@ app.get('/api/v1/books/find/:isbn', (req, res) => {
         isbn: industryIdentifiers ? `ISBN_13 ${industryIdentifiers[0].identifier}` : 'No ISBN available',
         image_url: imageLinks ? imageLinks.smallThumbnail : placeholderImage,
         description: description ? description : 'No description available',
-      }
+      };
     }))
     .then(book => res.send(book[0]))
-    .catch(console.error)
-})
+    .catch(console.error);
+});
 
 app.get('/api/v1/books', (req, res) => {
   client.query(`SELECT book_id, title, author, image_url, isbn FROM books;`)
@@ -105,7 +106,7 @@ app.post('/api/v1/books', (req, res) => {
   let { title, author, isbn, image_url, description } = req.body;
   client.query(`
     INSERT INTO books(title, author, isbn, image_url, description) VALUES($1, $2, $3, $4, $5)`,
-    [title, author, isbn, image_url, description]
+  [title, author, isbn, image_url, description]
   )
     .then(results => res.sendStatus(201))
     .catch(console.error);
@@ -117,11 +118,11 @@ app.put('/api/v1/books/:id', (req, res) => {
     UPDATE books
     SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5
     WHERE book_id=$6`,
-    [title, author, isbn, image_url, description, req.params.id]
+  [title, author, isbn, image_url, description, req.params.id]
   )
     .then(() => res.sendStatus(204))
-    .catch(console.error)
-})
+    .catch(console.error);
+});
 
 app.delete('/api/v1/books/:id', (req, res) => {
   client.query('DELETE FROM books WHERE book_id=$1', [req.params.id])
