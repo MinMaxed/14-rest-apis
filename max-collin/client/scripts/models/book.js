@@ -22,7 +22,7 @@ ENV.apiUrl = ENV.isProduction ? ENV.productionApiUrl : ENV.developmentApiUrl;
   Book.prototype.toHtml = function () {
     let template = Handlebars.compile($('#book-list-template').text());
     return template(this);
-  }
+  };
 
   Book.all = [];
   Book.loadAll = rows => Book.all = rows.sort((a, b) => b.title - a.title).map(book => new Book(book));
@@ -50,7 +50,7 @@ ENV.apiUrl = ENV.isProduction ? ENV.productionApiUrl : ENV.developmentApiUrl;
       data: book,
     })
       .then(() => page(`/books/${bookId}`))
-      .catch(errorCallback)
+      .catch(errorCallback);
 
   Book.destroy = id =>
     $.ajax({
@@ -58,21 +58,22 @@ ENV.apiUrl = ENV.isProduction ? ENV.productionApiUrl : ENV.developmentApiUrl;
       method: 'DELETE',
     })
       .then(() => page('/'))
-      .catch(errorCallback)
+      .catch(errorCallback);
 
   // COMMENT: Where is this method invoked? What is passed in as the 'book' argument when invoked? What callback will be invoked after Book.loadAll is invoked?
-  //it's being invoked in the bookView.initSearchFormPage on /page/search webpage. 'book' is being defined when the user initiates a search or a .get. books previewed are one's that match the search parameters. the next callback is the .initIndexPage. 
+  //it's being invoked in the bookView.initSearchFormPage on /page/search webpage. 'book' is being defined when the user initiates a search or a .get. books previewed are one's that match the search parameters. the next callback is the .initIndexPage.
   Book.find = (book, callback) =>
     $.get(`${ENV.apiUrl}/api/v1/books/find`, book)
       .then(Book.loadAll)
       .then(callback)
-      .catch(errorCallback)
+      .catch(errorCallback);
 
-  // COMMENT: Where is this method invoked? How does it differ from the Book.find method, above? invoked at bookView.initSearchResultsPage, it differents from the previous search by using the isbn as its parameter.
+  // COMMENT: Where is this method invoked? How does it differ from the Book.find method, above?
+  // invoked at bookView.initSearchResultsPage, it differents from the previous search by using the isbn as its parameter.
   Book.findOne = isbn =>
     $.get(`${ENV.apiUrl}/api/v1/books/find/${isbn}`)
       .then(Book.create)
-      .catch(errorCallback)
+      .catch(errorCallback);
 
   module.Book = Book;
-})(app)
+})(app);
