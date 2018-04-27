@@ -5,8 +5,9 @@ var app = app || {};
 const ENV = {};
 
 ENV.isProduction = window.location.protocol === 'https:';
-ENV.productionApiUrl = 'insert cloud API server URL here';
-ENV.developmentApiUrl = 'insert local API server URL here';
+ENV.productionApiUrl = '';//will be heroku
+ENV.developmentApiUrl = 'http://localhost:3000';
+// ENV.developmentApiUrl = 'postgres://postgres:1111@localhost:5432/book_app';
 ENV.apiUrl = ENV.isProduction ? ENV.productionApiUrl : ENV.developmentApiUrl;
 
 (function (module) {
