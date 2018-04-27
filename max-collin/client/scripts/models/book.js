@@ -5,8 +5,8 @@ var app = app || {};
 const ENV = {};
 
 ENV.isProduction = window.location.protocol === 'https:';
-ENV.productionApiUrl = 'insert cloud API server URL here';
-ENV.developmentApiUrl = 'insert local API server URL here';
+ENV.productionApiUrl = 'insert cloud API server URL here'; //TBD need link for heroku which I got all setup except deploying to github
+ENV.developmentApiUrl = 'http://localhost:8080';
 ENV.apiUrl = ENV.isProduction ? ENV.productionApiUrl : ENV.developmentApiUrl;
 
 (function (module) {
